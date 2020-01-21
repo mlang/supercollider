@@ -43,7 +43,7 @@ class server_node : public bi::list_base_hook<bi::link_mode<bi::auto_unlink>>, /
 protected:
     server_node(int32_t node_id, bool type): node_id(node_id), node_is_synth(type), use_count_(0) {}
 
-    virtual ~server_node(void) { assert(parent_ == 0); }
+    virtual ~server_node() { assert(parent_ == 0); }
 
     /* @{ */
     /** node id handling */
@@ -52,7 +52,7 @@ protected:
 public:
     int32_t node_id;
 
-    int32_t id(void) const { return node_id; }
+    int32_t id() const { return node_id; }
     /* @} */
 
     typedef bi::list_base_hook<bi::link_mode<bi::auto_unlink>> parent_hook;
@@ -70,9 +70,9 @@ public:
     friend bool operator==(server_node const& lhs, server_node const& rhs) { return lhs.node_id == rhs.node_id; }
     /* @} */
 
-    bool is_synth(void) const { return node_is_synth; }
+    bool is_synth() const { return node_is_synth; }
 
-    bool is_group(void) const { return !node_is_synth; }
+    bool is_group() const { return !node_is_synth; }
 
     /* @{ */
     /* set a scalar slot */
@@ -97,10 +97,10 @@ public:
 
     /* @{ */
     /** group traversing */
-    inline const server_node* previous_node(void) const;
-    inline server_node* previous_node(void);
-    inline const server_node* next_node(void) const;
-    inline server_node* next_node(void);
+    inline const server_node* previous_node() const;
+    inline server_node* previous_node();
+    inline const server_node* next_node() const;
+    inline server_node* next_node();
     /* @} */
 
 private:
@@ -111,11 +111,11 @@ private:
     bool running_ = true;
 
 public:
-    virtual void pause(void) { running_ = false; }
+    virtual void pause() { running_ = false; }
 
-    virtual void resume(void) { running_ = true; }
+    virtual void resume() { running_ = true; }
 
-    bool is_running(void) const { return running_; }
+    bool is_running() const { return running_; }
     /* @} */
 
 private:
@@ -128,12 +128,12 @@ private:
 public:
     /* @{ */
     /** parent group handling */
-    const abstract_group* get_parent(void) const { return parent_; }
+    const abstract_group* get_parent() const { return parent_; }
 
-    abstract_group* get_parent(void) { return parent_; }
+    abstract_group* get_parent() { return parent_; }
 
     inline void set_parent(abstract_group* parent);
-    inline void clear_parent(void);
+    inline void clear_parent();
     /* @} */
 
 private:
@@ -150,9 +150,9 @@ public:
 public:
     /* refcountable */
     /* @{ */
-    void add_ref(void) { ++use_count_; }
+    void add_ref() { ++use_count_; }
 
-    void release(void) {
+    void release() {
         if (unlikely(--use_count_ == 0))
             delete this;
     }

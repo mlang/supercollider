@@ -41,7 +41,7 @@ class time_tag {
 public:
     static const uint64 fraction_steps = uint64(1) << 32;
 
-    time_tag(void): data_(0) {}
+    time_tag(): data_(0) {}
 
     time_tag(time_tag const& rhs): data_(rhs.data_) {}
 
@@ -55,13 +55,13 @@ public:
         data_ = cu.packed;
     }
 
-    uint32 get_secs(void) const { return reinterpret_cast<const cast_union*>(&data_)->unpacked[1]; }
+    uint32 get_secs() const { return reinterpret_cast<const cast_union*>(&data_)->unpacked[1]; }
 
-    uint32 get_fraction(void) const { return reinterpret_cast<const cast_union*>(&data_)->unpacked[0]; }
+    uint32 get_fraction() const { return reinterpret_cast<const cast_union*>(&data_)->unpacked[0]; }
 
-    double get_nanoseconds(void) const { return get_fractional_seconds() * 1e9; }
+    double get_nanoseconds() const { return get_fractional_seconds() * 1e9; }
 
-    double get_fractional_seconds(void) const { return get_fraction() / double(fraction_steps); }
+    double get_fractional_seconds() const { return get_fraction() / double(fraction_steps); }
 
     bool operator<(time_tag const& rhs) const { return data_ < rhs.data_; }
 
@@ -171,7 +171,7 @@ public:
         return time_tag(secs, fraction_units);
     }
 
-    boost::posix_time::ptime to_ptime(void) const {
+    boost::posix_time::ptime to_ptime() const {
         using namespace boost::gregorian;
         using namespace boost::posix_time;
 

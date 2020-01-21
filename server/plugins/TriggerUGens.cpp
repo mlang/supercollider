@@ -2389,7 +2389,7 @@ struct SendPeakRMS : public Unit {
     static const int channelCountIndex = 3;
     static const int signalStartIndex = 4;
 
-    SendPeakRMS(void) {
+    SendPeakRMS() {
         SendPeakRMS* unit = this;
 
         mChannelCount = (unsigned int)IN0(channelCountIndex);
@@ -2439,7 +2439,7 @@ struct SendPeakRMS : public Unit {
         mB1 = (lag != 0.f) ? exp(log001 / (lag * replyRate)) : 0.f;
     }
 
-    ~SendPeakRMS(void) {
+    ~SendPeakRMS() {
         SendPeakRMS* unit = this;
         RTFree(unit->mWorld, mChannelData);
     }
@@ -2459,12 +2459,12 @@ struct SendPeakRMS : public Unit {
             out = y1 = y0 + mB1 * (y1 - y0);
     }
 
-    char* getCmdName(void) {
+    char* getCmdName() {
         void* buffer = mChannelData;
         return (char*)(buffer) + mChannelCount * 3 * sizeof(float);
     }
 
-    void sendReply(void) {
+    void sendReply() {
         SendPeakRMS* unit = this;
         float* reply = (float*)alloca(mChannelCount * 2 * sizeof(float));
 
@@ -2485,7 +2485,7 @@ struct SendPeakRMS : public Unit {
         memset(mChannelData, 0, mChannelCount * 2 * sizeof(float));
     }
 
-    template <bool simd> void analyzeFullBlock(void) {
+    template <bool simd> void analyzeFullBlock() {
         SendPeakRMS* unit = this;
         for (int i = 0; i != mChannelCount; ++i) {
             float* in = IN(signalStartIndex + i);

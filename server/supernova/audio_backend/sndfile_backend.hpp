@@ -54,9 +54,9 @@ class sndfile_backend : public detail::audio_backend_base<sample_type, float, bl
     static const size_t queue_size = 10 * 1024 * 1024; // 30 MB
 
 public:
-    sndfile_backend(void): read_frames(queue_size), write_frames(queue_size) {}
+    sndfile_backend(): read_frames(queue_size), write_frames(queue_size) {}
 
-    size_t get_audio_blocksize(void) const { return block_size_; }
+    size_t get_audio_blocksize() const { return block_size_; }
 
     std::vector<sample_type> const& get_peaks() const { return max_peaks; }
 
@@ -93,16 +93,16 @@ public:
         temp_buffer.reset(calloc_aligned<float>(std::max(input_channels, output_channels) * block_size));
     }
 
-    void close_client(void) {
+    void close_client() {
         output_file.writeSync();
         input_file = output_file = SndfileHandle();
     }
 
-    bool audio_is_opened(void) { return output_file; }
+    bool audio_is_opened() { return output_file; }
 
-    bool audio_is_active(void) { return running.load(std::memory_order_acquire); }
+    bool audio_is_active() { return running.load(std::memory_order_acquire); }
 
-    void activate_audio(void) {
+    void activate_audio() {
         running.store(true);
 
         if (input_file) {
@@ -115,7 +115,7 @@ public:
         writer_thread = std::thread(std::bind(&sndfile_backend::sndfile_write_thread, this));
     }
 
-    void deactivate_audio(void) {
+    void deactivate_audio() {
         running.store(false);
 
         if (input_file) {
@@ -162,7 +162,7 @@ private:
             super::clear_inputs(frames_per_tick);
     }
 
-    void sndfile_read_thread(void) {
+    void sndfile_read_thread() {
         nova::name_thread("sndfile reader");
         assert(input_file);
 
@@ -218,7 +218,7 @@ private:
         } while (count);
     }
 
-    void sndfile_write_thread(void) {
+    void sndfile_write_thread() {
         nova::name_thread("sndfile writer");
 
         const size_t frames_per_tick = get_audio_blocksize();

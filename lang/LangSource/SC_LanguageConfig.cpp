@@ -59,7 +59,7 @@ SC_LanguageConfig::SC_LanguageConfig(bool optStandalone) {
     }
 }
 
-void SC_LanguageConfig::postExcludedDirectories(void) const {
+void SC_LanguageConfig::postExcludedDirectories() const {
     for (auto it : mExcludedDirectories) {
         post("\texcluding dir: '%s'\n", it.c_str());
     }

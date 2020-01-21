@@ -2178,7 +2178,7 @@ static void runShutdown() {
 }
 
 void closeAllGUIScreens();
-void TempoClock_stopAll(void);
+void TempoClock_stopAll();
 void closeAllCustomPorts();
 
 void shutdownLibrary() {

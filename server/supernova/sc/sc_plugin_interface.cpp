@@ -751,7 +751,7 @@ void sc_plugin_interface::reset_sampling_rate(int sr) {
 }
 
 
-void sc_done_action_handler::apply_done_actions(void) {
+void sc_done_action_handler::apply_done_actions() {
     for (server_node* node : done_nodes)
         instance->free_node(node);
     done_nodes.clear();
@@ -773,7 +773,7 @@ void sc_done_action_handler::apply_done_actions(void) {
     freeAll_nodes.clear();
 }
 
-sc_plugin_interface::~sc_plugin_interface(void) {
+sc_plugin_interface::~sc_plugin_interface() {
     delete[] world.mAudioBusTouched;
     delete[] world.mControlBusTouched;
     delete[] world.mSndBufs;

@@ -43,7 +43,7 @@ public:
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
 
-    tl_allocator(void) throw() {
+    tl_allocator() throw() {
         if (likely(initialized))
             return;
 
@@ -146,7 +146,7 @@ public:
 
     template <class U> struct rebind { typedef tl_allocator<U, bytes> other; };
 
-    tl_allocator(void) throw() {}
+    tl_allocator() throw() {}
 
     template <class U, std::size_t bytes_> tl_allocator(tl_allocator<U, bytes_> const& rhs) throw() {}
 

@@ -292,7 +292,7 @@ void sc_ugen_factory::load_plugin(boost::filesystem::path const& path) {
     return;
 }
 
-void sc_ugen_factory::close_handles(void) {
+void sc_ugen_factory::close_handles() {
     for (void* handle : open_handles) {
         void* ptr = dlsym(handle, "unload");
         if (ptr) {

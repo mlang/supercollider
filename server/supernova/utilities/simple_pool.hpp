@@ -45,7 +45,7 @@ template <bool blocking = false> class simple_pool {
     typedef typename mutex_type::scoped_lock scoped_lock;
 
     struct data : mutex_type {
-        data(void): pool(nullptr) {}
+        data(): pool(nullptr) {}
 
         void init(std::size_t size, bool lock) {
             pool = (char*)operator new(size);
@@ -55,7 +55,7 @@ template <bool blocking = false> class simple_pool {
             init_memory_pool(size, pool);
         }
 
-        ~data(void) {
+        ~data() {
             scoped_lock lock(*this);
             if (pool) {
                 destroy_memory_pool(pool);
@@ -67,7 +67,7 @@ template <bool blocking = false> class simple_pool {
     };
 
 public:
-    simple_pool(void) {}
+    simple_pool() {}
 
     simple_pool(simple_pool const& rhs) = delete;
     simple_pool& operator=(simple_pool const& rhs) = delete;
@@ -107,7 +107,7 @@ public:
         free_ex(p, data_.pool);
     }
 
-    std::size_t get_max_size(void) { return ::get_max_size(data_.pool); }
+    std::size_t get_max_size() { return ::get_max_size(data_.pool); }
 #endif
 private:
     data data_;

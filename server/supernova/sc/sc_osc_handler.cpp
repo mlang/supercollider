@@ -150,12 +150,12 @@ struct movable_string {
         const_cast<movable_string&>(rhs).data_ = nullptr;
     }
 
-    ~movable_string(void) {
+    ~movable_string() {
         if (data_)
             system_callback::deallocate((char*)data_);
     }
 
-    const char* c_str(void) const { return data_; }
+    const char* c_str() const { return data_; }
 
 private:
     const char* data_ = nullptr;
@@ -186,18 +186,18 @@ template <typename T> struct movable_array {
         return *this;
     }
 
-    ~movable_array(void) {
+    ~movable_array() {
         if (!data_)
             return;
         system_callback::deallocate(data_);
         data_ = nullptr;
     }
 
-    const T* data(void) const { return data_; }
+    const T* data() const { return data_; }
 
     const T& operator[](size_t index) const { return data_[index]; }
 
-    size_t size(void) const { return length_; }
+    size_t size() const { return length_; }
 
 private:
     size_t length_ = 0;
@@ -246,7 +246,7 @@ template <typename Functor> struct fn_system_callback : public system_callback {
 
     fn_system_callback(Functor&& fn): fn_(std::forward<Functor>(fn)) {}
 
-    void run(void) override { fn_(); }
+    void run() override { fn_(); }
 
     Functor fn_;
 };
@@ -256,7 +256,7 @@ template <typename Functor> struct fn_sync_callback : public audio_sync_callback
 
     fn_sync_callback(Functor&& fn): fn_(std::forward<Functor>(fn)) {}
 
-    void run(void) override { fn_(); }
+    void run() override { fn_(); }
 
     Functor fn_;
 };
@@ -514,7 +514,7 @@ void sc_notify_observers::send_udp(const char* data, size_t size, udp::endpoint 
 }
 
 
-void sc_scheduled_bundles::bundle_node::run(void) {
+void sc_scheduled_bundles::bundle_node::run() {
     typedef osc::ReceivedBundleElement bundle_element;
     typedef osc::ReceivedBundle received_bundle;
     typedef osc::ReceivedMessage ReceivedMessage;
@@ -736,7 +736,7 @@ void sc_osc_handler::tcp_connection::handle_message() {
 }
 
 
-void sc_osc_handler::start_tcp_accept(void) {
+void sc_osc_handler::start_tcp_accept() {
     tcp_connection::pointer new_connection = tcp_connection::create(tcp_acceptor_.get_executor());
 
     tcp_acceptor_.async_accept(
@@ -801,7 +801,7 @@ sc_osc_handler::received_packet* sc_osc_handler::received_packet::alloc_packet(c
     return p;
 }
 
-void sc_osc_handler::received_packet::run(void) { instance->handle_packet(data, length, endpoint_); }
+void sc_osc_handler::received_packet::run() { instance->handle_packet(data, length, endpoint_); }
 
 void sc_osc_handler::handle_packet(const char* data, std::size_t length, endpoint_ptr const& endpoint) {
     ReceivedPacket packet(data, length);
@@ -956,7 +956,7 @@ template <bool realtime> void handle_sync(ReceivedMessage const& message, endpoi
     });
 }
 
-void handle_clearSched(void) { instance->clear_scheduled_bundles(); }
+void handle_clearSched() { instance->clear_scheduled_bundles(); }
 
 void handle_error(ReceivedMessage const& message) {
     int val = first_arg_as_int(message);
@@ -1863,7 +1863,7 @@ struct completion_message {
     }
 
     /** default constructor creates uninitialized object */
-    completion_message(void): size_(0) {}
+    completion_message(): size_(0) {}
 
     completion_message(completion_message const& rhs) = delete;
     completion_message operator=(completion_message const& rhs) = delete;
@@ -1877,7 +1877,7 @@ struct completion_message {
         return *this;
     }
 
-    ~completion_message(void) {
+    ~completion_message() {
         if (size_)
             system_callback::deallocate(data_);
     }
@@ -2115,7 +2115,7 @@ template <bool realtime> void handle_b_allocReadChannel(ReceivedMessage const& m
 
 const char* b_write = "/b_write";
 
-void fire_b_write_exception(void) { throw std::runtime_error("wrong arguments for /b_write"); }
+void fire_b_write_exception() { throw std::runtime_error("wrong arguments for /b_write"); }
 
 template <bool realtime> void handle_b_write(ReceivedMessage const& msg, endpoint_ptr endpoint) {
     osc::ReceivedMessageArgumentIterator arg = msg.ArgumentsBegin();
@@ -2200,7 +2200,7 @@ fire_callback:
 
 const char* b_read = "/b_read";
 
-void fire_b_read_exception(void) { throw std::runtime_error("wrong arguments for /b_read"); }
+void fire_b_read_exception() { throw std::runtime_error("wrong arguments for /b_read"); }
 
 template <bool realtime> void handle_b_read(ReceivedMessage const& msg, endpoint_ptr endpoint) {
     osc::ReceivedMessageArgumentIterator arg = msg.ArgumentsBegin();
@@ -2283,7 +2283,7 @@ fire_callback:
 
 const char* b_readChannel = "/b_readChannel";
 
-void fire_b_readChannel_exception(void) { throw std::runtime_error("wrong arguments for /b_readChannel"); }
+void fire_b_readChannel_exception() { throw std::runtime_error("wrong arguments for /b_readChannel"); }
 
 template <bool realtime> void handle_b_readChannel(ReceivedMessage const& msg, endpoint_ptr endpoint) {
     osc::ReceivedMessageArgumentIterator arg = msg.ArgumentsBegin();

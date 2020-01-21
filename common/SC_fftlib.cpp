@@ -167,7 +167,7 @@ static inline float* scfft_create_fftwindow(int wintype, int log2n) {
 
 static void scfft_ensurewindow(unsigned short log2_fullsize, unsigned short log2_winsize, short wintype);
 
-static bool scfft_global_initialization(void) {
+static bool scfft_global_initialization() {
     for (int wintype = 0; wintype < 2; ++wintype) {
         for (int i = 0; i < SC_FFT_LOG2_ABSOLUTE_MAXSIZE_PLUS1; ++i) {
             fftWindow[wintype][i] = 0;

@@ -67,14 +67,14 @@ namespace {
 /* signal handler */
 void terminate(int i) { instance->terminate(); }
 
-void register_signal_handler(void) {
+void register_signal_handler() {
     void (*prev_fn)(int);
 
     prev_fn = ::signal(SIGINT, terminate);
 }
 
 #ifdef JACK_BACKEND
-void connect_jack_ports(void) {
+void connect_jack_ports() {
     using namespace boost;
     using namespace boost::algorithm;
 
@@ -272,7 +272,7 @@ void drop_rt_scheduling() {
         cout << "Warning: cannot drop rt priority" << endl;
 }
 
-void enable_core_dumps(void) {
+void enable_core_dumps() {
 #ifdef __LINUX__
     rlimit core_limit = { RLIM_INFINITY, RLIM_INFINITY };
     assert(setrlimit(RLIMIT_CORE, &core_limit) == 0); // enable core dumps for debug builds
